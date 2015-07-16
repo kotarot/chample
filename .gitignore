@@ -1,0 +1,11 @@
+.DS_Store
+*~
+*.swp
+
+# Object files
+*.o
+
+# Executables
+*.exe
+*.out
+chample
