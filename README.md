@@ -7,6 +7,7 @@ from original Kociemba's java program
 ([Cube Explorer](http://kociemba.org/download.htm)),
 but include some useful options.
 
-## Application
+## Applications
 
-[Champler](http://wrcc.main.jp/tools/champler) is a Web interface for Chample.
+* [Champler](http://wrcc.main.jp/tools/champler) is a Web interface for Chample.
+* [CubeChampleAPI](http://www.terabo.net/cube/apidocs/chample/) is a API for Chample.
