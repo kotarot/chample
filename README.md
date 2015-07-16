@@ -1,6 +1,6 @@
 # Chample
 
-This repository contains a scrambler for Rubik's cube (3x3x3)
+This repository contains a scrambler/solver for Rubik's cube (3x3x3)
 based on [Kociemba's Two-Phase Algorithm](http://kociemba.org/math/twophase.htm).
 The programs are written in C, which are just converted code
 from original Kociemba's java program
