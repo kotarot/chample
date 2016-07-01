@@ -35,13 +35,13 @@ int main(int argc, char *argv[])
 	// スクランブルの数
 	int num_scrambles = 5;
 	// スクランブルの種類
-	int type = 0;
+	int type = 6;
 	// スクランブルの長さの最大値
 	int depth = 30;
 	// タイムアウト値(ミリ秒)
 	time_t limit = 5000;
 	// 冗長出力
-	int is_verbose = 0;
+	int is_verbose = 1;
 	// ステータス表示
 	int show_status = 1;
 	// Facelet文字列
@@ -66,7 +66,7 @@ int main(int argc, char *argv[])
 			}
 		} else if (strcmp(argv[i], "-t") == 0) {
 			type = atoi(argv[++i]);
-			if (type < 0 || 4 < type) {
+			if (type < 0 || 6 < type) {
 				fprintf(stderr, "t must be between 0-4.\n");
 				exit(1);
 			}
@@ -157,6 +157,12 @@ int main(int argc, char *argv[])
 					break;
 				case 4: // パリティ無し
 					random_cube_with_no_parity(stat);
+					break;
+				case 5: // edit
+					edit_cube(stat);
+					break;
+				case 6: // edit
+					edit_cube2(stat);
 					break;
 			}
 		}

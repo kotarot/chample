@@ -4,7 +4,6 @@
  * My tools for using Two-Phase Algorithms
  * @author KT
  */
-
 #include <stdlib.h>
 #include <string.h>
 #include "mytools.h"
@@ -171,6 +170,39 @@ void corner_random_cube(char *des) {
 	do {
 		set_URFtoDLB(&cc, next_int(N_URFtoDLB));
 	} while (corner_parity(&cc) != 0);
+	to_facecube(&cc, &fc);
+	to_string(&fc, des);
+}
+
+void edit_cube(char *des) {
+	CubieCube cc;
+	FaceCube fc;
+	//int parity;
+
+	cubiecube_construct(&cc);
+	do {
+		set_flip(&cc, next_int(N_FLIP));
+		set_URtoBR(&cc, next_int(N_URtoBR));
+		set_twist(&cc, next_int(N_TWIST));
+		set_URFtoDLB(&cc, next_int(N_URFtoDLB));
+	} while (corner_parity(&cc) != 0 /*|| corner_roop(&cc) != 2*/ || count_co(&cc) != 4);
+	to_facecube(&cc, &fc);
+	to_string(&fc, des);
+}
+
+void edit_cube2(char *des) {
+	CubieCube cc;
+	FaceCube fc;
+	int parity;
+
+	cubiecube_construct(&cc);
+	do {
+		set_flip(&cc, next_int(N_FLIP));
+		set_URtoBR(&cc, next_int(N_URtoBR));
+		set_twist(&cc, next_int(N_TWIST));
+		set_URFtoDLB(&cc, next_int(N_URFtoDLB));
+		parity = corner_parity(&cc);
+	} while ((edge_parity(&cc) ^ corner_parity(&cc)) != 0  || parity != 1 || corner_roop(&cc) != 1 || edge_number(&cc, parity) != 14 || count_eo(&cc, parity) != 0|| count_co(&cc) != 0);
 	to_facecube(&cc, &fc);
 	to_string(&fc, des);
 }

@@ -294,6 +294,197 @@ short edge_parity(CubieCube *cubie) {
 	return s % 2;
 }
 
+short corner_roop(CubieCube *cubie) {
+	int fill[8];
+	int i, j;
+	for(i = URF; i <= DRB; i++) {
+		fill[i] = 0;
+	}
+	
+	int roop=0;
+	int buffer = ULB;//buffer指定
+	int nowcube = buffer;
+	int nextcube = buffer;
+	int roopfirst = buffer;
+	for (i = 0; i < 8; i++) {
+		nowcube = nextcube;//更新
+		nextcube = cubie->cp[nowcube];
+		fill[nowcube] = 1;
+		if (nextcube == roopfirst) {//ループが終わる場合
+			//co,cs判定
+			if(nowcube == nextcube && nowcube != buffer) {}
+			else {roop++;}
+
+			//新規ループ作成
+			for(j = URF; j<= DRB; j++){
+				if(fill[j] == 0){
+					roopfirst = j;
+					nextcube = roopfirst;
+					break;
+				}
+			}
+		}
+	}
+	return roop;
+}
+
+short edge_roop(CubieCube *cubie, int parity) {
+	int fill[12];
+	int ep[12];
+	int i, j;
+	for(i = UR; i <= BR; i++) {
+		if(!(cubie->ep[i] == UB || cubie->ep[i] == UL)||parity == 0){
+			ep[i] = cubie->ep[i];
+		}
+		else{//交換分析法
+			if(cubie->ep[i] == UB) { ep[i] = UL; }
+			else { ep[i] = UB; }
+		}
+	}
+	
+	for(i = UR; i <= BR; i++) {
+		fill[i] = 0;
+	}
+	
+	int roop=0;
+	int buffer = DF;//buffer指定
+	int nowcube = buffer;
+	int nextcube = buffer;
+	int roopfirst = buffer;
+	for (i = 0; i < 12; i++) {
+		nowcube = nextcube;//更新
+		nextcube = ep[nowcube];
+		fill[nowcube] = 1;
+		if (nextcube == roopfirst) {//ループが終わる場合
+			//co,cs判定
+			if(nowcube == nextcube && nowcube != buffer) {}
+			else {roop++;}
+
+			//新規ループ作成
+			for(j = UR; j<= BR; j++){
+				if(fill[j] == 0){
+					roopfirst = j;
+					nextcube = roopfirst;
+					break;
+				}
+			}
+		}
+	}
+	return roop;
+}
+
+short count_co(CubieCube *cubie) {
+	int i;
+	int co = 0;
+	for(i = URF; i <= DRB; i++) {
+		if (i == cubie->cp[i]) {
+			if(cubie->co[i] != 0 && i != ULB) co++;
+		}
+	}
+	return co;
+}
+
+short count_eo(CubieCube *cubie, int parity) {
+	int i;
+	int ep[12];
+	for(i = UR; i <= BR; i++) {
+		if(!(cubie->ep[i] == UB || cubie->ep[i] == UL)||parity == 0){
+			ep[i] = cubie->ep[i];
+		}
+		else{//交換分析法 epのみ入れ替え
+			if(cubie->ep[i] == UB) { ep[i] = UL;}
+			else  { ep[i] = UB;}
+		}
+	}
+	int n_eo = 0;
+	for(i = UR; i <= BR; i++) {
+		if (i == ep[i]) {
+			if(cubie->eo[i] != 0 && i != DF) n_eo++;
+		}
+	}
+	return n_eo;
+}
+
+short corner_number(CubieCube *cubie){
+	int fill[8];
+	int i, j;
+	for(i = URF; i <= DRB; i++) {
+		fill[i] = 0;
+	}
+	
+	int roop=0;
+	int co = 0;
+	int buffer = ULB;//buffer指定
+	int nowcube = buffer;
+	int nextcube = buffer;
+	int roopfirst = buffer;
+	for (i = 0; i < 8; i++) {
+		nowcube = nextcube;//更新
+		nextcube = cubie->cp[nowcube];
+		fill[nowcube] = 1;
+		if (nextcube == roopfirst) {//ループが終わる場合
+			//co,cs判定
+			if(nowcube == nextcube && nowcube != buffer) {co++;}
+			else {roop++;}
+
+			//新規ループ作成
+			for(j = URF; j<= DRB; j++){
+				if(fill[j] == 0){
+					roopfirst = j;
+					nextcube = roopfirst;
+					break;
+				}
+			}
+		}
+	}
+	return 8-1-co+roop-1;
+}
+
+short edge_number(CubieCube *cubie, int parity){
+	int fill[12];
+	int ep[12];
+	int i, j;
+	for(i = UR; i <= BR; i++) {
+		if(!(cubie->ep[i] == UB || cubie->ep[i] == UL)||parity == 0){
+			ep[i] = cubie->ep[i];
+		}
+		else{//交換分析法
+			if(cubie->ep[i] == UB) { ep[i] = UL; }
+			else { ep[i] = UB; }
+		}
+	}
+	for(i = UR; i <= BR; i++) {
+		fill[i] = 0;
+	}
+	
+	int roop=0;
+	int eo = 0;
+	int buffer = DF;//buffer指定
+	int nowcube = buffer;
+	int nextcube = buffer;
+	int roopfirst = buffer;
+	for (i = 0; i < 12; i++) {
+		nowcube = nextcube;//更新
+		nextcube = ep[nowcube];
+		fill[nowcube] = 1;
+		if (nextcube == roopfirst) {//ループが終わる場合
+			//co,cs判定
+			if(nowcube == nextcube && nowcube != buffer) {eo++;}//厳密にはeoじゃない
+			else {roop++;}
+
+			//新規ループ作成
+			for(j = UR; j<= BR; j++){
+				if(fill[j] == 0){
+					roopfirst = j;
+					nextcube = roopfirst;
+					break;
+				}
+			}
+		}
+	}
+	return 12-1-eo+roop-1;
+}
+
 // permutation of the UD-slice edges FR,FL,BL and BR
 short get_FRtoBR(CubieCube *cubie) {
 	int a, b, x, j, k;

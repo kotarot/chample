@@ -40,6 +40,15 @@ extern void set_flip(CubieCube *cubie, short flip);
 extern short corner_parity(CubieCube *cubie);
 extern short edge_parity(CubieCube *cubie);
 
+extern short corner_roop(CubieCube *cubie);
+extern short edge_roop(CubieCube *cubie, int parity);
+
+extern short count_co(CubieCube *cubie);
+extern short count_eo(CubieCube *cubie, int parity);
+
+extern short corner_number(CubieCube *cubie);
+extern short edge_number(CubieCube *cubie, int parity);
+
 extern short get_FRtoBR(CubieCube *cubie);
 extern void set_FRtoBR(CubieCube *cubie, short idx);
 
