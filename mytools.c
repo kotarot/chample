@@ -185,7 +185,7 @@ void edit_cube(char *des) {
 		set_URtoBR(&cc, next_int(N_URtoBR));
 		set_twist(&cc, next_int(N_TWIST));
 		set_URFtoDLB(&cc, next_int(N_URFtoDLB));
-	} while (corner_parity(&cc) != 0 /*|| corner_roop(&cc) != 2*/ || count_co(&cc) != 4);
+	} while ((edge_parity(&cc) ^ corner_parity(&cc)) != 0 /*|| corner_roop(&cc) != 2*/ || count_co(&cc) != 4);
 	to_facecube(&cc, &fc);
 	to_string(&fc, des);
 }
@@ -231,5 +231,3 @@ void reverse_alg(char *src, char *des)
 	}
 	des[i] = '\0';
 }
-
-
