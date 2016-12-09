@@ -4,6 +4,7 @@
 
 #include <stdio.h>
 #include <string.h>
+#include "kttools.h"
 #include "corner.h"
 #include "edge.h"
 #include "cubiecube.h"
@@ -245,10 +246,25 @@ void set_twist(CubieCube *cubie, short twist) {
 	}
 	cubie->co[DRB] = (3 - twist_parity % 3) % 3;
 }
+void set_twist_with_fixed(CubieCube *cubie, short twist, char *fixed_c) {
+	int twist_parity = 0, i;
+
+	for (i = DRB - 1; i >= URF; i--) {
+		// 勝手に乱数使って数学的には正しくない気がする
+		if (fixed_c[i] != 2) {
+			twist_parity += (cubie->co[i] = twist % 3);
+		} else {
+			twist_parity += (cubie->co[i] = next_int(2) + 1);
+		}
+		twist /= 3;
+	}
+	cubie->co[DRB] = (3 - twist_parity % 3) % 3;
+}
 
 // return the flip of the 12 edges. 0<= flip < 2^11
 short get_flip(CubieCube *cubie) {
-	short ret = 0, i;
+	short ret = 0;
+	int i;
 
 	for (i = UR; i < BR; i++) {
 		ret = ret * 2 + cubie->eo[i];
@@ -260,7 +276,21 @@ void set_flip(CubieCube *cubie, short flip) {
 	int flip_parity = 0, i;
 
 	for (i = BR - 1; i >= UR; i--) {
-		flip_parity += cubie->eo[i] = flip % 2;
+		flip_parity += (cubie->eo[i] = flip % 2);
+		flip /= 2;
+	}
+	cubie->eo[BR] = (2 - flip_parity % 2) % 2;
+}
+
+void set_flip_with_fixed(CubieCube *cubie, short flip, char *fixed_e) {
+	int flip_parity = 0, i;
+
+	for (i = BR - 1; i >= UR; i--) {
+		if (fixed_e[i] != 2) {
+			flip_parity += (cubie->eo[i] = flip % 2);
+		} else {
+			flip_parity += (cubie->eo[i] = 1);
+		}
 		flip /= 2;
 	}
 	cubie->eo[BR] = (2 - flip_parity % 2) % 2;
@@ -865,7 +895,7 @@ void set_URFtoDLB_with_fixed(CubieCube *cubie, int idx, char *fixed_c) {
 	// 数学的には正しくないかもしれない．
 	set_URFtoDLB(cubie, idx);
 	for (i = 0; i < 8; i++) {
-		if (fixed_c[i] == 1 && cubie->cp[i] != i) {
+		if (fixed_c[i] != 0 && cubie->cp[i] != i) {
 			for (j = 0; j < 8; j++) {
 				if (cubie->cp[j] == i) {
 					cubie->cp[j] = cubie->cp[i];
@@ -905,7 +935,7 @@ void set_URtoBR_with_fixed(CubieCube *cubie, int idx, char *fixed_e) {
 	// 数学的には正しくないかもしれない．
 	set_URtoBR(cubie, idx);
 	for (i = 0; i < 12; i++) {
-		if (fixed_e[i] == 1 && cubie->ep[i] != i) {
+		if (fixed_e[i] != 0 && cubie->ep[i] != i) {
 			for (j = 0; j < 12; j++) {
 				if (cubie->ep[j] == i) {
 					cubie->ep[j] = cubie->ep[i];

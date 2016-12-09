@@ -33,9 +33,11 @@ extern void edge_multiply(CubieCube *cubie, CubieCube *b);
 
 extern short get_twist(CubieCube *cubie);
 extern void set_twist(CubieCube *cubie, short twist);
+extern void set_twist_with_fixed(CubieCube *cubie, short twist, char *fixed_c);
 
 extern short get_flip(CubieCube *cubie);
 extern void set_flip(CubieCube *cubie, short flip);
+extern void set_flip_with_fixed(CubieCube *cubie, short flip, char *fixed_e);
 
 extern short corner_parity(CubieCube *cubie);
 extern short edge_parity(CubieCube *cubie);

@@ -221,17 +221,25 @@ void yy_cube_test2(char *des) {
 void fixed_cube(char *des, int edges_fixed, int edges_oriented, int corners_fixed, int corners_oriented, int parity_type) {
 	CubieCube cc;
 	FaceCube fc;
-	int i, loops = 0;
+	int i, j, loops = 0;
 	char timeouted = 0;
 
-	// 固定するエッジ・コーナーを作成
+	// 固定するエッジ・コーナーを表す ... (1)
+	// EO, CO を表す ... (2)
+	// ビット列作成 (fixed-EP + EO + fixed-CP + CO)
 	char fixed_e[12] = {0};
 	char fixed_c[8] = {0};
-	for (i = 0; i < edges_fixed + edges_oriented; i++) {
+	for (i = 0; i < edges_fixed; i++) {
 		fixed_e[i] = 1;
 	}
-	for (i = 0; i < corners_fixed + corners_oriented; i++) {
+	for (j = 0; j < edges_oriented; j++) {
+		fixed_e[i + j] = 2;
+	}
+	for (i = 0; i < corners_fixed; i++) {
 		fixed_c[i] = 1;
+	}
+	for (j = 0; j < corners_oriented; j++) {
+		fixed_c[i + j] = 2;
 	}
 	// Fisher-Yates shuffle
 	for (i = 0; i < 12; i++) {
@@ -251,11 +259,11 @@ void fixed_cube(char *des, int edges_fixed, int edges_oriented, int corners_fixe
 	if (parity_type == 1) { // パリティ無し
 		do {
 			loops++;
-			set_flip(&cc, next_int(N_FLIP));
+			set_flip_with_fixed(&cc, next_int(N_FLIP), fixed_e);
 			set_URtoBR_with_fixed(&cc, next_int(N_URtoBR), fixed_e);
-			set_twist(&cc, next_int(N_TWIST));
+			set_twist_with_fixed(&cc, next_int(N_TWIST), fixed_c);
 			set_URFtoDLB_with_fixed(&cc, next_int(N_URFtoDLB), fixed_c);
-			if (10000000 < loops) { // 1000万回ループでタイムアウト
+			if (1000000 < loops) { // 100万回ループでタイムアウト
 				timeouted = 1;
 				break;
 			}
@@ -265,11 +273,11 @@ void fixed_cube(char *des, int edges_fixed, int edges_oriented, int corners_fixe
 	} else if (parity_type == 2) { // パリティ有り
 		do {
 			loops++;
-			set_flip(&cc, next_int(N_FLIP));
+			set_flip_with_fixed(&cc, next_int(N_FLIP), fixed_e);
 			set_URtoBR_with_fixed(&cc, next_int(N_URtoBR), fixed_e);
-			set_twist(&cc, next_int(N_TWIST));
+			set_twist_with_fixed(&cc, next_int(N_TWIST), fixed_c);
 			set_URFtoDLB_with_fixed(&cc, next_int(N_URFtoDLB), fixed_c);
-			if (10000000 < loops) { // 1000万回ループでタイムアウト
+			if (1000000 < loops) { // 100万回ループでタイムアウト
 				timeouted = 1;
 				break;
 			}
@@ -279,17 +287,18 @@ void fixed_cube(char *des, int edges_fixed, int edges_oriented, int corners_fixe
 	} else { // パリティランダム
 		do {
 			loops++;
-			set_flip(&cc, next_int(N_FLIP));
+			set_flip_with_fixed(&cc, next_int(N_FLIP), fixed_e);
 			set_URtoBR_with_fixed(&cc, next_int(N_URtoBR), fixed_e);
-			set_twist(&cc, next_int(N_TWIST));
+			set_twist_with_fixed(&cc, next_int(N_TWIST), fixed_c);
 			set_URFtoDLB_with_fixed(&cc, next_int(N_URFtoDLB), fixed_c);
-			if (10000000 < loops) { // 1000万回ループでタイムアウト
+			if (1000000 < loops) { // 100万回ループでタイムアウト
 				timeouted = 1;
 				break;
 			}
 		} while ((edge_parity(&cc) ^ corner_parity(&cc)) != 0 ||
 			count_ef(&cc) != edges_fixed || count_naive_eo(&cc) != edges_oriented ||
 			count_cf(&cc) != corners_fixed || count_naive_co(&cc) != corners_oriented);
+		printf("%d\n", loops);
 	}
 
 	if (timeouted == 0) {
