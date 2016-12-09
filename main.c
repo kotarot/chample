@@ -50,8 +50,17 @@ int main(int argc, char *argv[])
 	//int num_threads = 2;
 	// プログラム開始時間
 	time_t tstart = (time_t)-1;
-    // シード値
-    unsigned long seed = 0;
+	// シード値
+	unsigned long seed = 0;
+
+	// 揃っているエッジ数
+	int edges_fixed = -1;
+	// EOしているエッジ数
+	int edges_oriented = -1;
+	// 揃っているコーナー数
+	int corners_fixed = -1;
+	// EOしているエッジ数
+	int corners_oriented = -1;
 
 	int i;
 
@@ -66,8 +75,8 @@ int main(int argc, char *argv[])
 			}
 		} else if (strcmp(argv[i], "-t") == 0) {
 			type = atoi(argv[++i]);
-			if (type < 0 || 6 < type) {
-				fprintf(stderr, "t must be between 0-4.\n");
+			if (type < 0 || 7 < type) {
+				fprintf(stderr, "t must be between 0-7.\n");
 				exit(1);
 			}
 		} else if (strcmp(argv[i], "-d") == 0) {
@@ -99,8 +108,52 @@ int main(int argc, char *argv[])
 		}*/
 		} else if (strcmp(argv[i], "-sd") == 0) {
 			seed = atoi(argv[++i]);
+		} else if (strcmp(argv[i], "-ef") == 0) {
+			edges_fixed = atoi(argv[++i]);
+			if (edges_fixed < 0 || 12 < edges_fixed) {
+				fprintf(stderr, "ef must be between 0-12.\n");
+				exit(1);
+			}
+		} else if (strcmp(argv[i], "-eo") == 0) {
+			edges_oriented = atoi(argv[++i]);
+			if (edges_oriented < 0 || 12 < edges_oriented) {
+				fprintf(stderr, "eo must be between 0-12.\n");
+				exit(1);
+			}
+		} else if (strcmp(argv[i], "-cf") == 0) {
+			corners_fixed = atoi(argv[++i]);
+			if (corners_fixed < 0 || 8 < corners_fixed) {
+				fprintf(stderr, "cf must be between 0-8.\n");
+				exit(1);
+			}
+		} else if (strcmp(argv[i], "-co") == 0) {
+			corners_oriented = atoi(argv[++i]);
+			if (corners_oriented < 0 || 8 < corners_oriented) {
+				fprintf(stderr, "co must be between 0-8.\n");
+				exit(1);
+			}
 		} else {
 			fprintf(stderr, "Bad arguments.\n");
+			exit(1);
+		}
+	}
+
+	// エラーとするオプションの組み合わせ
+	if (type == 7) {
+		if (edges_fixed < 0) {
+			fprintf(stderr, "ef must be specified if type is 7.\n");
+			exit(1);
+		}
+		if (edges_oriented < 0) {
+			fprintf(stderr, "eo must be specified if type is 7.\n");
+			exit(1);
+		}
+		if (corners_fixed < 0) {
+			fprintf(stderr, "cf must be specified if type is 7.\n");
+			exit(1);
+		}
+		if (corners_oriented < 0) {
+			fprintf(stderr, "eo must be specified if type is 7.\n");
 			exit(1);
 		}
 	}
@@ -123,11 +176,15 @@ int main(int argc, char *argv[])
 	}
 
 	// 静的データの初期化
-	mt_init((unsigned long)time(NULL) + seed);
+	if (seed == 0) {
+		mt_init((unsigned long)time(NULL) + seed);
+	} else {
+		mt_init(seed);
+	}
 	cubiecube_init();
 	coordcube_init();
-    if (facelets[0] != '\0') {
-	    num_scrambles = 1;
+	if (facelets[0] != '\0') {
+		num_scrambles = 1;
 	}
 
 	// スクランブル生成
@@ -138,7 +195,7 @@ int main(int argc, char *argv[])
 		//output[0] = '\0';
 		// Facelet文字列指定されていたら
 		if (facelets[0] != '\0') {
-		    strcpy(stat, facelets);
+			strcpy(stat, facelets);
 		}
 		// スクランブルタイプによってスクランブルされたキューブの状態を生成する
 		else {
@@ -163,6 +220,9 @@ int main(int argc, char *argv[])
 					break;
 				case 6: // YY君が作成してくれたキューブ状態 (test 2)
 					yy_cube_test2(stat);
+					break;
+				case 7: // E-fixed, EO, C-fixed, CO を指定する
+					fixed_cube(stat, edges_fixed, edges_oriented, corners_fixed, corners_oriented);
 					break;
 			}
 		}

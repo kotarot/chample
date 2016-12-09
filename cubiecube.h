@@ -44,7 +44,11 @@ extern short corner_roop(CubieCube *cubie);
 extern short edge_roop(CubieCube *cubie, int parity);
 
 extern short count_co(CubieCube *cubie);
+extern short count_naive_co(CubieCube *cubie);
 extern short count_eo(CubieCube *cubie, int parity);
+extern short count_naive_eo(CubieCube *cubie);
+extern short count_cf(CubieCube *cubie);
+extern short count_ef(CubieCube *cubie);
 
 extern short corner_number(CubieCube *cubie);
 extern short edge_number(CubieCube *cubie, int parity);

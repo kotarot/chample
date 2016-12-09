@@ -294,6 +294,9 @@ short edge_parity(CubieCube *cubie) {
 	return s % 2;
 }
 
+/**
+ * @author: YY
+ */
 short corner_roop(CubieCube *cubie) {
 	int fill[8];
 	int i, j;
@@ -328,6 +331,9 @@ short corner_roop(CubieCube *cubie) {
 	return roop;
 }
 
+/**
+ * @author: YY
+ */
 short edge_roop(CubieCube *cubie, int parity) {
 	int fill[12];
 	int ep[12];
@@ -373,6 +379,9 @@ short edge_roop(CubieCube *cubie, int parity) {
 	return roop;
 }
 
+/**
+ * @author: YY
+ */
 short count_co(CubieCube *cubie) {
 	int i;
 	int co = 0;
@@ -384,6 +393,23 @@ short count_co(CubieCube *cubie) {
 	return co;
 }
 
+/**
+ * @author: Kotaro
+ */
+short count_naive_co(CubieCube *cubie) {
+	int i;
+	int co = 0;
+	for (i = URF; i <= DRB; i++) {
+		if (i == cubie->cp[i]) {
+			if (cubie->co[i] != 0) co++;
+		}
+	}
+	return co;
+}
+
+/**
+ * @author: YY
+ */
 short count_eo(CubieCube *cubie, int parity) {
 	int i;
 	int ep[12];
@@ -399,12 +425,57 @@ short count_eo(CubieCube *cubie, int parity) {
 	int n_eo = 0;
 	for(i = UR; i <= BR; i++) {
 		if (i == ep[i]) {
-			if(cubie->eo[i] != 0 && i != DF) n_eo++;
+			if (cubie->eo[i] != 0 && i != DF) n_eo++;
 		}
 	}
 	return n_eo;
 }
 
+/**
+ * @author: Kotaro
+ */
+short count_naive_eo(CubieCube *cubie) {
+	int i;
+	int eo = 0;
+	for (i = UR; i <= BR; i++) {
+		if (i == cubie->ep[i]) {
+			if (cubie->eo[i] != 0) eo++;
+		}
+	}
+	return eo;
+}
+
+/**
+ * @author: Kotaro
+ */
+short count_cf(CubieCube *cubie) {
+	int i;
+	int cf = 0;
+	for (i = URF; i <= DRB; i++) {
+		if (i == cubie->cp[i]) {
+			if (cubie->co[i] == 0) cf++;
+		}
+	}
+	return cf;
+}
+
+/**
+ * @author: Kotaro
+ */
+short count_ef(CubieCube *cubie) {
+	int i;
+	int ef = 0;
+	for (i = UR; i <= BR; i++) {
+		if (i == cubie->ep[i]) {
+			if (cubie->eo[i] == 0) ef++;
+		}
+	}
+	return ef;
+}
+
+/**
+ * @author: YY
+ */
 short corner_number(CubieCube *cubie){
 	int fill[8];
 	int i, j;
@@ -440,6 +511,9 @@ short corner_number(CubieCube *cubie){
 	return 8-1-co+roop-1;
 }
 
+/**
+ * @author: YY
+ */
 short edge_number(CubieCube *cubie, int parity){
 	int fill[12];
 	int ep[12];

@@ -215,6 +215,28 @@ void yy_cube_test2(char *des) {
 }
 
 /**
+ * E-fixed, EO, C-fixed, CO を指定する
+ * @author: Kotaro
+ */
+void fixed_cube(char *des, int edges_fixed, int edges_oriented, int corners_fixed, int corners_oriented) {
+	CubieCube cc;
+	FaceCube fc;
+
+	cubiecube_construct(&cc);
+	do {
+		set_flip(&cc, next_int(N_FLIP));
+		set_URtoBR(&cc, next_int(N_URtoBR));
+		set_twist(&cc, next_int(N_TWIST));
+		set_URFtoDLB(&cc, next_int(N_URFtoDLB));
+	} while ((edge_parity(&cc) ^ corner_parity(&cc)) != 0 ||
+		count_ef(&cc) != edges_fixed || count_naive_eo(&cc) != edges_oriented ||
+		count_cf(&cc) != corners_fixed || count_naive_co(&cc) != corners_oriented);
+
+	to_facecube(&cc, &fc);
+	to_string(&fc, des);
+}
+
+/**
  * 手順の文字列を逆手順にする (switch文方式)
  * @return 逆手順にされた手順の文字列
  */
