@@ -221,13 +221,37 @@ void yy_cube_test2(char *des) {
 void fixed_cube(char *des, int edges_fixed, int edges_oriented, int corners_fixed, int corners_oriented) {
 	CubieCube cc;
 	FaceCube fc;
+	int i;
+
+	// 固定するエッジ・コーナーを作成
+	char fixed_e[12] = {0};
+	char fixed_c[8] = {0};
+	for (i = 0; i < edges_fixed + edges_oriented; i++) {
+		fixed_e[i] = 1;
+	}
+	for (i = 0; i < corners_fixed + corners_oriented; i++) {
+		fixed_c[i] = 1;
+	}
+	// Fisher-Yates shuffle
+	for (i = 0; i < 12; i++) {
+		int j = next_int(12);
+		char t = fixed_e[i];
+		fixed_e[i] = fixed_e[j];
+		fixed_e[j] = t;
+	}
+	for (i = 0; i < 8; i++) {
+		int j = next_int(8);
+		char t = fixed_c[i];
+		fixed_c[i] = fixed_c[j];
+		fixed_c[j] = t;
+	}
 
 	cubiecube_construct(&cc);
 	do {
 		set_flip(&cc, next_int(N_FLIP));
-		set_URtoBR(&cc, next_int(N_URtoBR));
+		set_URtoBR_with_fixed(&cc, next_int(N_URtoBR), fixed_e);
 		set_twist(&cc, next_int(N_TWIST));
-		set_URFtoDLB(&cc, next_int(N_URFtoDLB));
+		set_URFtoDLB_with_fixed(&cc, next_int(N_URFtoDLB), fixed_c);
 	} while ((edge_parity(&cc) ^ corner_parity(&cc)) != 0 ||
 		count_ef(&cc) != edges_fixed || count_naive_eo(&cc) != edges_oriented ||
 		count_cf(&cc) != corners_fixed || count_naive_co(&cc) != corners_oriented);

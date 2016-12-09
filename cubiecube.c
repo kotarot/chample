@@ -854,6 +854,29 @@ void set_URFtoDLB(CubieCube *cubie, int idx) {
 	}
 }
 
+/**
+ * @author: Kotaro
+ */
+void set_URFtoDLB_with_fixed(CubieCube *cubie, int idx, char *fixed_c) {
+	int i, j;
+
+	// シャッフルした後，
+	// 固定コーナーを正しいものと交換することで元に戻す．
+	// 数学的には正しくないかもしれない．
+	set_URFtoDLB(cubie, idx);
+	for (i = 0; i < 8; i++) {
+		if (fixed_c[i] == 1 && cubie->cp[i] != i) {
+			for (j = 0; j < 8; j++) {
+				if (cubie->cp[j] == i) {
+					cubie->cp[j] = cubie->cp[i];
+					cubie->cp[i] = i;
+					break;
+				}
+			}
+		}
+	}
+}
+
 void set_URtoBR(CubieCube *cubie, int idx) {
 	char perm[] = { UR, UF, UL, UB, DR, DF, DL, DB, FR, FL, BL, BR };
 	int j, k;
@@ -868,6 +891,29 @@ void set_URtoBR(CubieCube *cubie, int idx) {
 	// set edges
 	for (j = 11; j >= 0; j--) {
 		cubie->ep[j] = perm[j];
+	}
+}
+
+/**
+ * @author: Kotaro
+ */
+void set_URtoBR_with_fixed(CubieCube *cubie, int idx, char *fixed_e) {
+	int i, j;
+
+	// シャッフルした後，
+	// 固定エッジを正しいものと交換することで元に戻す．
+	// 数学的には正しくないかもしれない．
+	set_URtoBR(cubie, idx);
+	for (i = 0; i < 12; i++) {
+		if (fixed_e[i] == 1 && cubie->ep[i] != i) {
+			for (j = 0; j < 12; j++) {
+				if (cubie->ep[j] == i) {
+					cubie->ep[j] = cubie->ep[i];
+					cubie->ep[i] = i;
+					break;
+				}
+			}
+		}
 	}
 }
 

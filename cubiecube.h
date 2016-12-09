@@ -70,9 +70,9 @@ extern short get_UBtoDF(CubieCube *cubie);
 extern void set_UBtoDF(CubieCube *cubie, short idx);
 extern void set_URFtoDLB(CubieCube *cubie, int idx);
 extern void set_URtoBR(CubieCube *cubie, int idx);
+extern void set_URFtoDLB_with_fixed(CubieCube *cubie, int idx, char *fixed_c);
+extern void set_URtoBR_with_fixed(CubieCube *cubie, int idx, char *fixed_e);
 
 extern int cubiecube_verify(CubieCube *cubie);
 
 #endif
-
-
