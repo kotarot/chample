@@ -41,7 +41,7 @@ int main(int argc, char *argv[])
 	// タイムアウト値(ミリ秒)
 	time_t limit = 5000;
 	// 冗長出力
-	int is_verbose = 1;
+	int is_verbose = 0;
 	// ステータス表示
 	int show_status = 1;
 	// Facelet文字列
@@ -206,8 +206,8 @@ int main(int argc, char *argv[])
 
 	// 実行時間の計算
 	if (is_verbose) {
-		printf("-- Executing Time --\n");
-		printf("All Exec-Time: %ld\n", (clock() - tstart));
+		printf("\n");
+		printf("CPU Time (sec): %lf\n", (double)(clock() - tstart) / CLOCKS_PER_SEC);
 	}
 
 	return 0;
