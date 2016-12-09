@@ -221,7 +221,8 @@ void yy_cube_test2(char *des) {
 void fixed_cube(char *des, int edges_fixed, int edges_oriented, int corners_fixed, int corners_oriented, int parity_type) {
 	CubieCube cc;
 	FaceCube fc;
-	int i;
+	int i, loops = 0;
+	char timeouted = 0;
 
 	// 固定するエッジ・コーナーを作成
 	char fixed_e[12] = {0};
@@ -249,35 +250,55 @@ void fixed_cube(char *des, int edges_fixed, int edges_oriented, int corners_fixe
 	cubiecube_construct(&cc);
 	if (parity_type == 1) { // パリティ無し
 		do {
+			loops++;
 			set_flip(&cc, next_int(N_FLIP));
 			set_URtoBR_with_fixed(&cc, next_int(N_URtoBR), fixed_e);
 			set_twist(&cc, next_int(N_TWIST));
 			set_URFtoDLB_with_fixed(&cc, next_int(N_URFtoDLB), fixed_c);
+			if (10000000 < loops) { // 1000万回ループでタイムアウト
+				timeouted = 1;
+				break;
+			}
 		} while (edge_parity(&cc) != 0 || corner_parity(&cc) != 0 ||
 			count_ef(&cc) != edges_fixed || count_naive_eo(&cc) != edges_oriented ||
 			count_cf(&cc) != corners_fixed || count_naive_co(&cc) != corners_oriented);
 	} else if (parity_type == 2) { // パリティ有り
 		do {
+			loops++;
 			set_flip(&cc, next_int(N_FLIP));
 			set_URtoBR_with_fixed(&cc, next_int(N_URtoBR), fixed_e);
 			set_twist(&cc, next_int(N_TWIST));
 			set_URFtoDLB_with_fixed(&cc, next_int(N_URFtoDLB), fixed_c);
+			if (10000000 < loops) { // 1000万回ループでタイムアウト
+				timeouted = 1;
+				break;
+			}
 		} while (edge_parity(&cc) == 0 || corner_parity(&cc) == 0 ||
 			count_ef(&cc) != edges_fixed || count_naive_eo(&cc) != edges_oriented ||
 			count_cf(&cc) != corners_fixed || count_naive_co(&cc) != corners_oriented);
 	} else { // パリティランダム
 		do {
+			loops++;
 			set_flip(&cc, next_int(N_FLIP));
 			set_URtoBR_with_fixed(&cc, next_int(N_URtoBR), fixed_e);
 			set_twist(&cc, next_int(N_TWIST));
 			set_URFtoDLB_with_fixed(&cc, next_int(N_URFtoDLB), fixed_c);
+			if (10000000 < loops) { // 1000万回ループでタイムアウト
+				timeouted = 1;
+				break;
+			}
 		} while ((edge_parity(&cc) ^ corner_parity(&cc)) != 0 ||
 			count_ef(&cc) != edges_fixed || count_naive_eo(&cc) != edges_oriented ||
 			count_cf(&cc) != corners_fixed || count_naive_co(&cc) != corners_oriented);
 	}
 
-	to_facecube(&cc, &fc);
-	to_string(&fc, des);
+	if (timeouted == 0) {
+		to_facecube(&cc, &fc);
+		to_string(&fc, des);
+	} else {
+		des[0] = 'T';
+		des[1] = '\0';
+	}
 }
 
 /**

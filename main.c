@@ -232,41 +232,45 @@ int main(int argc, char *argv[])
 			}
 		}
 
-		/*if (is_verbose) {
-			printf("[%d] CubeString:\n%s\n", i, stat);
-			char cs[64];
-			sprintf(cs, "\n[%d] CubeString\n", i);
-			output = strcat(output, cs);
-
-			output += "\n" + getName() + ": [" + i + "] CubeString\n";
-			output += c.substring(0, 9) + " - ";
-			output += c.substring(9, 18) + " - ";
-			output += c.substring(18, 27) + " - ";
-			output += c.substring(27, 36) + " - ";
-			output += c.substring(36, 45) + " - ";
-			output += c.substring(45, 54) + "\n";
-		}*/
-		// 状態を表示
-		if (show_status) {
-			printf("%s\n", stat);
-		}
-
-		// その状態から完成状態までの解法を検索
-		// 参考: このメソッドの引数
-		//      solution(java.lang.String facelets, int maxDepth, long timeOut, boolean useSeparator)
-		//        Computes the solver string for a given cube.
-		solution(&sc, stat, depth, limit, 0, result);
-		/*if (is_verbose) {
-			//output = strcat(output, );
-			//output += getName() + ": [" + i + "] Result\n";
-			printf("[%d] Result:\n%s\n", i, result);
-		}*/
-		if (result[0] == 'E') { // if Error
-			strcpy(output, result);
+		if (stat[0] == 'T') { // キューブ状態生成タイムアウト
+			printf("Timeout\nTimeout\n");
 		} else {
-			reverse_alg(result, output);
+			/*if (is_verbose) {
+				printf("[%d] CubeString:\n%s\n", i, stat);
+				char cs[64];
+				sprintf(cs, "\n[%d] CubeString\n", i);
+				output = strcat(output, cs);
+
+				output += "\n" + getName() + ": [" + i + "] CubeString\n";
+				output += c.substring(0, 9) + " - ";
+				output += c.substring(9, 18) + " - ";
+				output += c.substring(18, 27) + " - ";
+				output += c.substring(27, 36) + " - ";
+				output += c.substring(36, 45) + " - ";
+				output += c.substring(45, 54) + "\n";
+			}*/
+			// 状態を表示
+			if (show_status) {
+				printf("%s\n", stat);
+			}
+
+			// その状態から完成状態までの解法を検索
+			// 参考: このメソッドの引数
+			//      solution(java.lang.String facelets, int maxDepth, long timeOut, boolean useSeparator)
+			//        Computes the solver string for a given cube.
+			solution(&sc, stat, depth, limit, 0, result);
+			/*if (is_verbose) {
+				//output = strcat(output, );
+				//output += getName() + ": [" + i + "] Result\n";
+				printf("[%d] Result:\n%s\n", i, result);
+			}*/
+			if (result[0] == 'E') { // if Error
+				strcpy(output, result);
+			} else {
+				reverse_alg(result, output);
+			}
+			printf("%s\n", output);
 		}
-		printf("%s\n", output);
 	}
 
 	// 実行時間の計算
