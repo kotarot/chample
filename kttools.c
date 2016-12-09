@@ -218,7 +218,7 @@ void yy_cube_test2(char *des) {
  * E-fixed, EO, C-fixed, CO を指定する
  * @author: Kotaro
  */
-void fixed_cube(char *des, int edges_fixed, int edges_oriented, int corners_fixed, int corners_oriented) {
+void fixed_cube(char *des, int edges_fixed, int edges_oriented, int corners_fixed, int corners_oriented, int parity_type) {
 	CubieCube cc;
 	FaceCube fc;
 	int i;
@@ -247,14 +247,34 @@ void fixed_cube(char *des, int edges_fixed, int edges_oriented, int corners_fixe
 	}
 
 	cubiecube_construct(&cc);
-	do {
-		set_flip(&cc, next_int(N_FLIP));
-		set_URtoBR_with_fixed(&cc, next_int(N_URtoBR), fixed_e);
-		set_twist(&cc, next_int(N_TWIST));
-		set_URFtoDLB_with_fixed(&cc, next_int(N_URFtoDLB), fixed_c);
-	} while ((edge_parity(&cc) ^ corner_parity(&cc)) != 0 ||
-		count_ef(&cc) != edges_fixed || count_naive_eo(&cc) != edges_oriented ||
-		count_cf(&cc) != corners_fixed || count_naive_co(&cc) != corners_oriented);
+	if (parity_type == 1) { // パリティ無し
+		do {
+			set_flip(&cc, next_int(N_FLIP));
+			set_URtoBR_with_fixed(&cc, next_int(N_URtoBR), fixed_e);
+			set_twist(&cc, next_int(N_TWIST));
+			set_URFtoDLB_with_fixed(&cc, next_int(N_URFtoDLB), fixed_c);
+		} while (edge_parity(&cc) != 0 || corner_parity(&cc) != 0 ||
+			count_ef(&cc) != edges_fixed || count_naive_eo(&cc) != edges_oriented ||
+			count_cf(&cc) != corners_fixed || count_naive_co(&cc) != corners_oriented);
+	} else if (parity_type == 2) { // パリティ有り
+		do {
+			set_flip(&cc, next_int(N_FLIP));
+			set_URtoBR_with_fixed(&cc, next_int(N_URtoBR), fixed_e);
+			set_twist(&cc, next_int(N_TWIST));
+			set_URFtoDLB_with_fixed(&cc, next_int(N_URFtoDLB), fixed_c);
+		} while (edge_parity(&cc) == 0 || corner_parity(&cc) == 0 ||
+			count_ef(&cc) != edges_fixed || count_naive_eo(&cc) != edges_oriented ||
+			count_cf(&cc) != corners_fixed || count_naive_co(&cc) != corners_oriented);
+	} else { // パリティランダム
+		do {
+			set_flip(&cc, next_int(N_FLIP));
+			set_URtoBR_with_fixed(&cc, next_int(N_URtoBR), fixed_e);
+			set_twist(&cc, next_int(N_TWIST));
+			set_URFtoDLB_with_fixed(&cc, next_int(N_URFtoDLB), fixed_c);
+		} while ((edge_parity(&cc) ^ corner_parity(&cc)) != 0 ||
+			count_ef(&cc) != edges_fixed || count_naive_eo(&cc) != edges_oriented ||
+			count_cf(&cc) != corners_fixed || count_naive_co(&cc) != corners_oriented);
+	}
 
 	to_facecube(&cc, &fc);
 	to_string(&fc, des);

@@ -62,9 +62,8 @@ int main(int argc, char *argv[])
 	// EOしているエッジ数
 	int corners_oriented = -1;
 
-	int i;
-
 	// コマンドライン引数の処理
+	int i;
 	facelets[0] = '\0';
 	for (i = 1; i < argc; i++) {
 		if (strcmp(argv[i], "-n") == 0) {
@@ -75,8 +74,8 @@ int main(int argc, char *argv[])
 			}
 		} else if (strcmp(argv[i], "-t") == 0) {
 			type = atoi(argv[++i]);
-			if (type < 0 || 7 < type) {
-				fprintf(stderr, "t must be between 0-7.\n");
+			if (type < 0 || 9 < type) {
+				fprintf(stderr, "t must be between 0-9.\n");
 				exit(1);
 			}
 		} else if (strcmp(argv[i], "-d") == 0) {
@@ -221,8 +220,14 @@ int main(int argc, char *argv[])
 				case 6: // YY君が作成してくれたキューブ状態 (test 2)
 					yy_cube_test2(stat);
 					break;
-				case 7: // E-fixed, EO, C-fixed, CO を指定する
-					fixed_cube(stat, edges_fixed, edges_oriented, corners_fixed, corners_oriented);
+				case 7: // E-fixed, EO, C-fixed, CO を指定する (パリティランダム)
+					fixed_cube(stat, edges_fixed, edges_oriented, corners_fixed, corners_oriented, 0);
+					break;
+				case 8: // E-fixed, EO, C-fixed, CO を指定する (パリティ無し)
+					fixed_cube(stat, edges_fixed, edges_oriented, corners_fixed, corners_oriented, 1);
+					break;
+				case 9: // E-fixed, EO, C-fixed, CO を指定する (パリティ有り)
+					fixed_cube(stat, edges_fixed, edges_oriented, corners_fixed, corners_oriented, 2);
 					break;
 			}
 		}
