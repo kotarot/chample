@@ -51,7 +51,7 @@ int main(int argc, char *argv[])
 	// プログラム開始時間
 	time_t tstart = (time_t)-1;
 	// シード値
-	unsigned long seed = 0;
+	unsigned long seed = (unsigned long)0;
 
 	// 揃っているエッジ数
 	int edges_fixed = -1;
@@ -177,7 +177,7 @@ int main(int argc, char *argv[])
 
 	// 静的データの初期化
 	if (seed == 0) {
-		mt_init((unsigned long)time(NULL) + seed);
+		mt_init((unsigned long)time(NULL));
 	} else {
 		mt_init(seed);
 	}

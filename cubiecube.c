@@ -839,7 +839,7 @@ void set_UBtoDF(CubieCube *cubie, short idx) {
 
 void set_URFtoDLB(CubieCube *cubie, int idx) {
 	char perm[] = { URF, UFL, ULB, UBR, DFR, DLF, DBL, DRB };
-	int j, k, x;
+	int j, k;
 
 	for (j = 1; j < 8; j++) {
 		k = idx % (j + 1);
@@ -849,14 +849,14 @@ void set_URFtoDLB(CubieCube *cubie, int idx) {
 		}
 	}
 	// set corners
-	for (x = 7, j = 7; j >= 0; j--) {
-		cubie->cp[j] = perm[x--];
+	for (j = 7; j >= 0; j--) {
+		cubie->cp[j] = perm[j];
 	}
 }
 
 void set_URtoBR(CubieCube *cubie, int idx) {
 	char perm[] = { UR, UF, UL, UB, DR, DF, DL, DB, FR, FL, BL, BR };
-	int j, k, x;
+	int j, k;
 
 	for (j = 1; j < 12; j++) {
 		k = idx % (j + 1);
@@ -866,8 +866,8 @@ void set_URtoBR(CubieCube *cubie, int idx) {
 		}
 	}
 	// set edges
-	for (x = 11, j = 11; j >= 0; j--) {
-		cubie->ep[j] = perm[x--];
+	for (j = 11; j >= 0; j--) {
+		cubie->ep[j] = perm[j];
 	}
 }
 
@@ -921,5 +921,3 @@ int cubiecube_verify(CubieCube *cubie) {
 	}
 	return 0; // cube ok
 }
-
-
