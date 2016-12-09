@@ -518,7 +518,7 @@ void set_FRtoBR(CubieCube *cubie, short idx) {
 	for (e = 0; e < 12; e++) {
 		cubie->ep[e] = DB; // Use UR to invalidate all edges
 	}
-	for (j = 1, k; j < 4; j++) { // generate permutation from index b
+	for (j = 1; j < 4; j++) { // generate permutation from index b
 		k = b % (j + 1);
 		b /= j + 1;
 		while (k-- > 0) {
@@ -572,7 +572,7 @@ void set_URFtoDLF(CubieCube *cubie, short idx) {
 	for (j = 0; j < 8; j++) {
 		cubie->cp[j] = DRB; // Use DRB to invalidate all corners
 	}
-	for (j = 1, k; j < 6; j++) { // generate permutation from index b
+	for (j = 1; j < 6; j++) { // generate permutation from index b
 		k = b % (j + 1);
 		b /= j + 1;
 		while (k-- > 0) {
@@ -647,7 +647,7 @@ void set_URtoDF(CubieCube *cubie, int idx) {
 	for (e = 0; e < 12; e++) {
 		cubie->ep[e] = BR;// Use BR to invalidate all edges
 	}
-	for (j = 1, k; j < 6; j++) { // generate permutation from index b
+	for (j = 1; j < 6; j++) { // generate permutation from index b
 		k = b % (j + 1);
 		b /= j + 1;
 		while (k-- > 0) {
@@ -700,7 +700,7 @@ void set_URtoUL(CubieCube *cubie, short idx) {
 	for (e = 0; e < 12; e++) {
 		cubie->ep[e] = BR; // Use BR to invalidate all edges
 	}
-	for (j = 1, k; j < 3; j++) { // generate permutation from index b
+	for (j = 1; j < 3; j++) { // generate permutation from index b
 		k = b % (j + 1);
 		b /= j + 1;
 		while (k-- > 0) {
@@ -747,7 +747,7 @@ void set_UBtoDF(CubieCube *cubie, short idx) {
 	for (e = 0; e < 12; e++) {
 		cubie->ep[e] = BR;// Use BR to invalidate all edges
 	}
-	for (j = 1, k; j < 3; j++) { // generate permutation from index b
+	for (j = 1; j < 3; j++) { // generate permutation from index b
 		k = b % (j + 1);
 		b /= j + 1;
 		while (k-- > 0) {
