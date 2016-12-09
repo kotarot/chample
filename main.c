@@ -11,7 +11,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
-#include "mytools.h"
+#include "kttools.h"
 #include "search.h"
 #include "coordcube.h"
 #include "cubiecube.h"
@@ -35,7 +35,7 @@ int main(int argc, char *argv[])
 	// スクランブルの数
 	int num_scrambles = 5;
 	// スクランブルの種類
-	int type = 0;
+	int type = 6;
 	// スクランブルの長さの最大値
 	int depth = 30;
 	// タイムアウト値(ミリ秒)
@@ -66,7 +66,7 @@ int main(int argc, char *argv[])
 			}
 		} else if (strcmp(argv[i], "-t") == 0) {
 			type = atoi(argv[++i]);
-			if (type < 0 || 4 < type) {
+			if (type < 0 || 6 < type) {
 				fprintf(stderr, "t must be between 0-4.\n");
 				exit(1);
 			}
@@ -158,6 +158,12 @@ int main(int argc, char *argv[])
 				case 4: // パリティ無し
 					random_cube_with_no_parity(stat);
 					break;
+				case 5: // YY君が作成してくれたキューブ状態 (test 1)
+					yy_cube_test1(stat);
+					break;
+				case 6: // YY君が作成してくれたキューブ状態 (test 2)
+					yy_cube_test2(stat);
+					break;
 			}
 		}
 
@@ -175,8 +181,8 @@ int main(int argc, char *argv[])
 			output += c.substring(36, 45) + " - ";
 			output += c.substring(45, 54) + "\n";
 		}*/
-        // 状態を表示
-        if (show_status) {
+		// 状態を表示
+		if (show_status) {
 			printf("%s\n", stat);
 		}
 
@@ -191,7 +197,7 @@ int main(int argc, char *argv[])
 			printf("[%d] Result:\n%s\n", i, result);
 		}*/
 		if (result[0] == 'E') { // if Error
-            strcpy(output, result);
+			strcpy(output, result);
 		} else {
 			reverse_alg(result, output);
 		}
@@ -200,8 +206,8 @@ int main(int argc, char *argv[])
 
 	// 実行時間の計算
 	if (is_verbose) {
-		printf("-- Executing Time --\n");
-		printf("All Exec-Time: %ld\n", (clock() - tstart));
+		printf("\n");
+		printf("CPU Time (sec): %lf\n", (double)(clock() - tstart) / CLOCKS_PER_SEC);
 	}
 
 	return 0;

@@ -1,13 +1,12 @@
 /**
- * mytools.c
+ * kttools.c
  *
  * My tools for using Two-Phase Algorithms
  * @author KT
  */
-
 #include <stdlib.h>
 #include <string.h>
-#include "mytools.h"
+#include "kttools.h"
 #include "coordcube.h"
 #include "cubiecube.h"
 #include "facecube.h"
@@ -46,7 +45,7 @@ int next_int(int max)
  *         -5: Twist error: One corner has to be twisted<br>
  *         -6: Parity error: Two corners or two edges have to be exchanged
  */
-int mytools_verify(char *s)
+int kttools_verify(char *s)
 {
 	int count[6] = {0};
 	int i;
@@ -176,6 +175,46 @@ void corner_random_cube(char *des) {
 }
 
 /**
+ * YY君が作成してくれたキューブ状態 (test 1)
+ * @auther: YY and Kotaro
+ */
+void yy_cube_test1(char *des) {
+	CubieCube cc;
+	FaceCube fc;
+
+	cubiecube_construct(&cc);
+	do {
+		set_flip(&cc, next_int(N_FLIP));
+		set_URtoBR(&cc, next_int(N_URtoBR));
+		set_twist(&cc, next_int(N_TWIST));
+		set_URFtoDLB(&cc, next_int(N_URFtoDLB));
+	} while ((edge_parity(&cc) ^ corner_parity(&cc)) != 0 /*|| corner_roop(&cc) != 2*/ || count_co(&cc) != 4);
+	to_facecube(&cc, &fc);
+	to_string(&fc, des);
+}
+
+/**
+ * YY君が作成してくれたキューブ状態 (test 2)
+ * @auther: YY and Kotaro
+ */
+void yy_cube_test2(char *des) {
+	CubieCube cc;
+	FaceCube fc;
+	int parity;
+
+	cubiecube_construct(&cc);
+	do {
+		set_flip(&cc, next_int(N_FLIP));
+		set_URtoBR(&cc, next_int(N_URtoBR));
+		set_twist(&cc, next_int(N_TWIST));
+		set_URFtoDLB(&cc, next_int(N_URFtoDLB));
+		parity = corner_parity(&cc);
+	} while ((edge_parity(&cc) ^ corner_parity(&cc)) != 0  || parity != 1 || corner_roop(&cc) != 1 || edge_number(&cc, parity) != 14 || count_eo(&cc, parity) != 0 || count_co(&cc) != 0);
+	to_facecube(&cc, &fc);
+	to_string(&fc, des);
+}
+
+/**
  * 手順の文字列を逆手順にする (switch文方式)
  * @return 逆手順にされた手順の文字列
  */
@@ -199,5 +238,3 @@ void reverse_alg(char *src, char *des)
 	}
 	des[i] = '\0';
 }
-
-

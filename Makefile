@@ -1,5 +1,5 @@
 PROGRAM = chample
-OBJS = main.o coordcube.o cubiecube.o facecube.o mytools.o search.o
+OBJS = main.o coordcube.o cubiecube.o facecube.o kttools.o search.o
 CC = gcc
 CFLAGS = -Wall -O3
 
