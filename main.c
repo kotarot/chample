@@ -181,8 +181,8 @@ int main(int argc, char *argv[])
 			output += c.substring(36, 45) + " - ";
 			output += c.substring(45, 54) + "\n";
 		}*/
-        // 状態を表示
-        if (show_status) {
+		// 状態を表示
+		if (show_status) {
 			printf("%s\n", stat);
 		}
 
@@ -197,7 +197,7 @@ int main(int argc, char *argv[])
 			printf("[%d] Result:\n%s\n", i, result);
 		}*/
 		if (result[0] == 'E') { // if Error
-            strcpy(output, result);
+			strcpy(output, result);
 		} else {
 			reverse_alg(result, output);
 		}
