@@ -1,12 +1,12 @@
 /**
- * mytools.c
+ * kttools.c
  *
  * My tools for using Two-Phase Algorithms
  * @author KT
  */
 #include <stdlib.h>
 #include <string.h>
-#include "mytools.h"
+#include "kttools.h"
 #include "coordcube.h"
 #include "cubiecube.h"
 #include "facecube.h"
@@ -45,7 +45,7 @@ int next_int(int max)
  *         -5: Twist error: One corner has to be twisted<br>
  *         -6: Parity error: Two corners or two edges have to be exchanged
  */
-int mytools_verify(char *s)
+int kttools_verify(char *s)
 {
 	int count[6] = {0};
 	int i;

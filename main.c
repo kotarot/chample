@@ -11,7 +11,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
-#include "mytools.h"
+#include "kttools.h"
 #include "search.h"
 #include "coordcube.h"
 #include "cubiecube.h"
