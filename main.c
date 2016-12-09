@@ -158,11 +158,11 @@ int main(int argc, char *argv[])
 				case 4: // パリティ無し
 					random_cube_with_no_parity(stat);
 					break;
-				case 5: // edit
-					edit_cube(stat);
+				case 5: // YY君が作成してくれたキューブ状態 (test 1)
+					yy_cube_test1(stat);
 					break;
-				case 6: // edit
-					edit_cube2(stat);
+				case 6: // YY君が作成してくれたキューブ状態 (test 2)
+					yy_cube_test2(stat);
 					break;
 			}
 		}

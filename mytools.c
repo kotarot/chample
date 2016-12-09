@@ -174,10 +174,13 @@ void corner_random_cube(char *des) {
 	to_string(&fc, des);
 }
 
-void edit_cube(char *des) {
+/**
+ * YY君が作成してくれたキューブ状態 (test 1)
+ * @auther: YY and Kotaro
+ */
+void yy_cube_test1(char *des) {
 	CubieCube cc;
 	FaceCube fc;
-	//int parity;
 
 	cubiecube_construct(&cc);
 	do {
@@ -190,7 +193,11 @@ void edit_cube(char *des) {
 	to_string(&fc, des);
 }
 
-void edit_cube2(char *des) {
+/**
+ * YY君が作成してくれたキューブ状態 (test 2)
+ * @auther: YY and Kotaro
+ */
+void yy_cube_test2(char *des) {
 	CubieCube cc;
 	FaceCube fc;
 	int parity;
@@ -202,7 +209,7 @@ void edit_cube2(char *des) {
 		set_twist(&cc, next_int(N_TWIST));
 		set_URFtoDLB(&cc, next_int(N_URFtoDLB));
 		parity = corner_parity(&cc);
-	} while ((edge_parity(&cc) ^ corner_parity(&cc)) != 0  || parity != 1 || corner_roop(&cc) != 1 || edge_number(&cc, parity) != 14 || count_eo(&cc, parity) != 0|| count_co(&cc) != 0);
+	} while ((edge_parity(&cc) ^ corner_parity(&cc)) != 0  || parity != 1 || corner_roop(&cc) != 1 || edge_number(&cc, parity) != 14 || count_eo(&cc, parity) != 0 || count_co(&cc) != 0);
 	to_facecube(&cc, &fc);
 	to_string(&fc, des);
 }
