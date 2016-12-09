@@ -298,7 +298,6 @@ void fixed_cube(char *des, int edges_fixed, int edges_oriented, int corners_fixe
 		} while ((edge_parity(&cc) ^ corner_parity(&cc)) != 0 ||
 			count_ef(&cc) != edges_fixed || count_naive_eo(&cc) != edges_oriented ||
 			count_cf(&cc) != corners_fixed || count_naive_co(&cc) != corners_oriented);
-		printf("%d\n", loops);
 	}
 
 	if (timeouted == 0) {
