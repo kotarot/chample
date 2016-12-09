@@ -138,21 +138,29 @@ int main(int argc, char *argv[])
 	}
 
 	// エラーとするオプションの組み合わせ
-	if (type == 7) {
+	if (type == 7 || type == 8 || type == 9) {
 		if (edges_fixed < 0) {
-			fprintf(stderr, "ef must be specified if type is 7.\n");
+			fprintf(stderr, "ef must be specified if type is 7-9.\n");
 			exit(1);
 		}
 		if (edges_oriented < 0) {
-			fprintf(stderr, "eo must be specified if type is 7.\n");
+			fprintf(stderr, "eo must be specified if type is 7-9.\n");
 			exit(1);
 		}
 		if (corners_fixed < 0) {
-			fprintf(stderr, "cf must be specified if type is 7.\n");
+			fprintf(stderr, "cf must be specified if type is 7-9.\n");
 			exit(1);
 		}
 		if (corners_oriented < 0) {
-			fprintf(stderr, "eo must be specified if type is 7.\n");
+			fprintf(stderr, "eo must be specified if type is 7-9.\n");
+			exit(1);
+		}
+		if (12 < edges_fixed + edges_oriented) {
+			fprintf(stderr, "ef + eo must be equal or smaller than 12.\n");
+			exit(1);
+		}
+		if (8 < corners_fixed + corners_oriented) {
+			fprintf(stderr, "cf + co must be equal or smaller than 8.\n");
 			exit(1);
 		}
 	}
